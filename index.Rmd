@@ -11,15 +11,15 @@ library(tidyverse)
 ```
 
 
-{r}
-knitr::opts_chunk$set(echo = TRUE)
-library(tidyverse)
+### Data Overview
 
-
+The data used for this visual was originally published by the UN Food and Agriculture Organization (FAO). Though it 
+does not seem to work for me, this link, included in the sources credited for the figure, leads to the data in its
 published form: https://fra-data.fao.org/WO/assessment/fra2020 
-
+Because I was unable to access the link to the original source of the data, no further information was able to be 
+obtained. I, however, obtained the data at the following link, under the "Share of Land Covered by Forest" figure:
 https://ourworldindata.org/grapher/forest-area-as-share-of-land-area?tab=chart&time=earliest..latest&country=England~Scotland~FRA~USA
-
+Here, there is a tab below titled "Download" with an option to download a csv file containing the dataset used.
 
 
 
@@ -59,15 +59,7 @@ wrangled_forest <- wrangled_forest %>%
   filter(land_type == 'Continent')
 ```
 
-## Replication
 
-Original Visualization Replication:
-```{r alt-design}
-wrangled_forest %>%
-  filter(land_type == 'Continent') %>%
-  ggplot(aes(x = Year , y = forest_cover, color = Entity)) +
-  geom_line()
-```
 ```{r}
 plot_vis <- plot_ly(wrangled_forest, x = ~Year, y = ~forest_cover, type = 'scatter', mode = 'lines')
 
