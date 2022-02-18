@@ -1,0 +1,78 @@
+---
+title: "index.rmd"
+author: "Samantha Driesenga sld39"
+date: "2/9/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(plotly)
+library(tidyverse)
+```
+
+
+{r}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+
+
+published form: https://fra-data.fao.org/WO/assessment/fra2020 
+
+https://ourworldindata.org/grapher/forest-area-as-share-of-land-area?tab=chart&time=earliest..latest&country=England~Scotland~FRA~USA
+
+
+
+
+```{r load-data}
+forest_data <- readr::read_csv('forest-area-as-share-of-land-area.csv')
+summary(forest_data)
+nrow(forest_data)
+#forest_data
+glimpse(forest_data)
+```
+
+```{r group}
+forest_data %>%
+  group_by(Entity)
+```
+```{r ungroup}
+forest_data %>%
+  ungroup
+```
+
+
+### Wrangling
+
+Although the data is quite wrangled already when downloaded, and is formatted in a suitable way to recreate the original visual, I believe it would be beneficial for others using and interacting with this dataset to be able to discern between the different kinds of entities included, as there are countries, regions, and continents all included without any way to tell each apart or filter accordingly. I intend to create another column for this purpose.
+
+```{r wrangle}
+wrangled_forest <- forest_data %>%
+  mutate(land_type = as.factor(ifelse(Entity == 'World', 'World',
+                            ifelse(!is.na(Code), 'Country', 
+                            ifelse(Entity %in% c('Africa' , 'Asia' , 'Central America' , 'Europe' , 'Northern America',  'Oceania' , 'South America') , 'Continent' , 
+                                   'Region')))))
+wrangled_forest %>%
+  arrange(desc(Entity))
+```
+```{r}
+wrangled_forest <- wrangled_forest %>%
+  filter(land_type == 'Continent')
+```
+
+## Replication
+
+Original Visualization Replication:
+```{r alt-design}
+wrangled_forest %>%
+  filter(land_type == 'Continent') %>%
+  ggplot(aes(x = Year , y = forest_cover, color = Entity)) +
+  geom_line()
+```
+```{r}
+plot_vis <- plot_ly(wrangled_forest, x = ~Year, y = ~forest_cover, type = 'scatter', mode = 'lines')
+
+plot_vis <- plot_vis %>% add_trace(y = ~Africa, name = 'Africa', 
+                         line = list(color = 'red', width = 4, dash = 'dot'))
+plot_vis
+```
+
