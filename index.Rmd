@@ -57,14 +57,73 @@ wrangled_forest %>%
 ```{r}
 wrangled_forest <- wrangled_forest %>%
   filter(land_type == 'Continent')
+wrangled_forest
 ```
 
+```{r}
+Africa_forest <- wrangled_forest %>%
+  filter(Entity == 'Africa')
+nrow(Africa_forest)
+```
 
 ```{r}
-plot_vis <- plot_ly(wrangled_forest, x = ~Year, y = ~forest_cover, type = 'scatter', mode = 'lines')
+Asia_forest <- wrangled_forest %>%
+  filter(Entity == 'Asia')
+nrow(Asia_forest)
+```
 
-plot_vis <- plot_vis %>% add_trace(y = ~Africa, name = 'Africa', 
-                         line = list(color = 'red', width = 4, dash = 'dot'))
+```{r}
+CA_forest <- wrangled_forest %>%
+  filter(Entity == 'Central America')
+nrow(CA_forest)
+```
+
+```{r}
+Europe_forest <- wrangled_forest %>%
+  filter(Entity == 'Europe')
+nrow(Europe_forest)
+```
+
+```{r}
+NA_forest <- wrangled_forest %>%
+  filter(Entity == 'Northern America')
+nrow(NA_forest)
+```
+
+```{r}
+Oceania_forest <- wrangled_forest %>%
+  filter(Entity == 'Oceania')
+nrow(Oceania_forest)
+```
+
+```{r}
+SA_forest <- wrangled_forest %>%
+  filter(Entity == 'South America')
+nrow(SA_forest)
+```
+
+```{r}
+continent_forest <- data.frame(Africa_forest, Asia_forest, CA_forest, Europe_forest, NA_forest, Oceania_forest, SA_forest)
+continent_forest
+```
+
+```{r}
+continent_forest <- continent_forest %>%
+  group_by('Entity')
+continent_forest
+```
+
+```{r}
+plot_vis <- plot_ly(continent_forest, x = ~Year, y = ~forest_cover, name = 'Africa', type = 'scatter', mode = 'lines')
+
+plot_vis <- plot_vis %>% add_trace(y = ~forest_cover.1, name = 'Asia', type = 'scatter', mode = 'lines')
+plot_vis <- plot_vis %>% add_trace(y = ~forest_cover.2, name = 'Central America', type = 'scatter', mode = 'lines')
+plot_vis <- plot_vis %>% add_trace(y = ~forest_cover.3, name = 'Europe', type = 'scatter', mode = 'lines')
+plot_vis <- plot_vis %>% add_trace(y = ~forest_cover.4, name = 'North America', type = 'scatter', mode = 'lines')
+plot_vis <- plot_vis %>% add_trace(y = ~forest_cover.5, name = 'Ociania', type = 'scatter', mode = 'lines')
+plot_vis <- plot_vis %>% add_trace(y = ~forest_cover.6, name = 'South America', type = 'scatter', mode = 'lines')
+
+
 plot_vis
 ```
 
