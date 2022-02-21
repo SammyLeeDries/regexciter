@@ -1,5 +1,5 @@
 ---
-title: "Global Forest Cover"
+title: "I Speak for the Trees"
 author: "Samantha Driesenga sld39"
 date: "2/9/2022"
 output: html_document
